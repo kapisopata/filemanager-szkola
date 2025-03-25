@@ -1,0 +1,30 @@
+<nav>
+    <a href="/">upload</a>
+    <a href="/filemanager">filemanager</a>
+    <a href="/info">info</a>
+    <a href="/filemanager2">filemanager2</a>
+    <a href="/filemanager3">filemanager3</a>
+    <a href="/filemanager4">filemanager4</a>
+    <a href="/filemanager5">filemanager5</a>
+</nav>
+
+<div class="container">
+    <aside>
+        <p class="menu-item">file details</p>
+    </aside>
+
+    <main>
+
+        <p class="menu-item">author Kacper Sopata (2024)</p>
+
+        {{#if file}}
+        <ul class="file-list">
+            <li class="file-info">ID: {{number file.id}}</li>
+            <li class="file-info">Name: {{file.name}}</li>
+            <li class="file-info">Path: {{file.path}}</li>
+            <li class="file-info">Size: {{file.size}}</li>
+            <li class="file-info">Type: {{file.type}}</li>
+        </ul>
+        {{/if}}
+    </main>
+</div>

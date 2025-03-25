@@ -1,0 +1,168 @@
+<nav>
+    <a href="/">upload</a>
+    <a href="/filemanager">filemanager</a>
+    <a href="/info">info</a>
+    <a href="/filemanager2">filemanager2</a>
+    <a href="/filemanager3">filemanager3</a>
+    <a href="/filemanager4">filemanager4</a>
+    <a href="/filemanager5">filemanager5</a>
+</nav>
+
+<div class="container">
+    <aside>
+        <div class="menu-item" onclick="togglePanel()" id="filters">filters</div>
+        <div class="menu-item" onclick="myFunction3()">rename file</div>
+        <form action="/upl" method="post" enctype="multipart/form-data" id="saveForm">
+            <input type="file" id="fileInput" name="image" accept="image/*" hidden />
+            <button id="saveButton" onclick="uploadImage()">Save Changes</button>
+        </form>
+    </aside>
+
+    <div>
+        <div id="panel" class="panel">
+            <h4 id="text">[ filters ]</h4>
+            {{#each effects}}
+            <p>{{name}}</p>
+            <div style="background-image:url('{{image_path}}');filter:{{name}}(100%)" id="photo" class="filter-label"
+                data-filter="{{name}}">
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <main>
+        <div class="main-box">
+            <div class="folder2">
+                <h3 id="">preview file - <a href="/image-preview/{{encodeURI currentFileName}}">[/{{encodeURI
+                        currentFileName}}]</a>
+                </h3>
+                <div id="dimens"></div>
+            </div>
+            <div id="imageContainer">
+                <img id="imagePreview" class="imagePreview" src="{{imageUrl}}" alt="{{currentFileName}}"
+                    style="max-width: 100%; height: auto;">
+                <canvas id="canvas" style="display: none;"></canvas>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<dialog id="myDialog3" class="custom-dialog">
+    <h3>rename file: /{{encodeURIComponent currentFileName}}</h3>
+    <form action="/rename-file/{{currentDirectoryPath}}" method="POST">
+        <label><input type="hidden" name="oldName" value="{{currentFileName}}"></label>
+        <label>
+            <input type="text" name="newName" required>
+        </label>
+        <label>
+            <select name="select">
+                <option value=".png" {{#if (eq currentExtension ".png" )}}selected{{/if}}>.png</option>
+                <option value=".jpg" {{#if (eq currentExtension ".jpg" )}}selected{{/if}}>.jpg</option>
+                <option value=".gif" {{#if (eq currentExtension ".gif" )}}selected{{/if}}>.gif</option>
+                <option value=".jpeg" {{#if (eq currentExtension ".jpeg" )}}selected{{/if}}>.jpeg</option>
+            </select>
+        </label>
+        <div>
+            <button type="submit" class="btn-action download">rename</button>
+            <button type="button" class="btn-action delete" onclick="closeDialog('myDialog3')">cancel</button>
+        </div>
+    </form>
+</dialog>
+
+
+<script>
+
+
+
+    function myFunction2() {
+        //const canvas = document.getElementById('canvas');
+        //const imageData = canvas.toDataURL();
+        //document.getElementById('imageData').value = imageData;
+        alert("file saved");
+    }
+
+    function myFunction3() {
+        document.getElementById("myDialog3").showModal();
+    }
+    function closeDialog(dialogId) {
+        document.getElementById(dialogId).close();
+    }
+
+
+    // wyjezdzanie panela
+    let panelVisible = false;
+
+    function togglePanel() {
+        const panel = document.getElementById('panel');
+
+        if (panelVisible) {
+            panel.style.width = '0';
+        } else {
+            panel.style.width = '100%';
+        }
+        panelVisible = !panelVisible;
+    }
+
+
+    // stworzenie canvasa z dobrym filtrem
+    const image = document.getElementById('imagePreview');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const originalImage = image.src;
+    const dimens = document.getElementById('dimens');
+
+    image.onload = function () {
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+
+        const width = canvas.width;
+        const height = canvas.height;
+
+        dimens.textContent = `image dimensions: [${width}x${height}]`;
+    };
+
+    document.querySelectorAll('.filter-label').forEach(label => {
+        label.onclick = (e) => {
+            e.preventDefault();
+            const filter = label.dataset.filter;
+
+            if (filter === 'original') {
+                image.style.filter = 'none';
+                image.src = originalImage;
+            } else {
+                image.style.filter = `${filter}(${'100%'})`;
+            }
+        }
+    });
+
+
+
+    function uploadImage() {
+        canvas.toBlob(async (blob) => {
+            if (!blob || blob.size === 0) {
+                alert('Canvas is empty!');
+                return;
+            }
+
+            const filename = currentFileName;
+            const formData = new FormData();
+            formData.append('image', blob, filename);
+
+            try {
+                const response = await fetch('/save-image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(`Zapisano jako: ${result.filename}`);
+                }
+            } catch (error) {
+                console.error('Błąd:', error);
+            }
+        }, 'image/png');
+    }
+
+</script>

@@ -1,0 +1,23 @@
+<nav>
+    <a href="/">upload</a>
+    <a href="/filemanager">filemanager</a>
+    <a href="/info">info</a>
+    <a href="/filemanager2">filemanager2</a>
+    <a href="/filemanager3">filemanager3</a>
+    <a href="/filemanager4">filemanager4</a>
+    <a href="/filemanager5">filemanager5</a>
+</nav>
+<div class="container">
+    <aside>
+        <p class="menu-item">multiupload</p>
+    </aside>
+
+    <main>
+        <div class="upload-box">
+            <form enctype="multipart/form-data" method="POST" action="/upload">
+                <label id="lab121" class="btn">Select file(s) to upload<input type="file" multiple required name="imagetoupload" id="fileInput" hidden></label>
+                <button id="uploadBtn" type="submit">upload</button>
+            </form>
+        </div>
+    </main>
+</div>

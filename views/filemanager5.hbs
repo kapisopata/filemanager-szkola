@@ -1,0 +1,120 @@
+<nav>
+    <a href="/">upload</a>
+    <a href="/filemanager">filemanager</a>
+    <a href="/info">info</a>
+    <a href="/filemanager2">filemanager2</a>
+    <a href="/filemanager3">filemanager3</a>
+    <a href="/filemanager4">filemanager4</a>
+    <a href="/filemanager5">filemanager5</a>
+</nav>
+
+<div class="container">
+    <aside>
+        <div class="menu-item" onclick="myFunction()">new folder</div>
+        {{#if (gt trail.length 1)}}
+        <div class="menu-item" onclick="myFunction3()">rename folder</div>
+        {{/if}}
+        <div class="menu-item" onclick="myFunction2()">new file</div>
+        <div class="upload-box">
+            <form enctype="multipart/form-data" method="POST" action="/upload5/{{currentPath}}">
+                <label id="lab121" class="btn">Select file(s) to upload
+                    <input type="file" multiple required name="imagetoupload" id="fileInput" hidden>
+                </label>
+                <button id="uploadBtn" type="submit">upload</button>
+            </form>
+        </div>
+    </aside>
+
+    <main>
+        <div class="main-box">
+            <div>
+                {{#each trail}}
+                <div class="folder"><a href="/filemanager5/{{encodeURI this.path}}">[{{encodeURI this.name}}]</a>
+                </div>
+                {{/each}}
+                <h2 class="text">folders</h2>
+                <div class="items-container">
+                    {{#each uploadedFolders}}
+                    <div class="item">
+                        <div class="icon">{{icon}}</div>
+                        <div class="name">
+                            <a href="/filemanager5/{{encodeURI this.path}}">[{{encodeURIComponent this.name}}]</a>
+                        </div>
+                        <div class="delete_x">
+                            <a href="/delete-folder/{{encodeURI this.path}}">x</a>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            <hr>
+            <div>
+                <h2 class="text">files</h2>
+                <div class="items-container">
+                    {{#each uploadedFiles}}
+                    <div class="item_2">
+                        <div class="icon2">{{icon}}</div>
+                        <div class="name">
+                            <a href="/image-view/{{encodeURI this.path}}">[{{encodeURIComponent this.name}}]</a>
+                        </div>
+                        <div class="delete_x">
+                            <a href="/delete-file/{{encodeURI path}}">x</a>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<dialog id="myDialog" class="custom-dialog">
+    <h3>new folder name: {{#each trail}}/{{encodeURIComponent this.name}}{{/each}}</h3>
+    <form method="post" action="/filemanager5/{{currentPath}}" class="dialog-form">
+        <label><input type="text" name="folderName"></label>
+        <div>
+            <button type="submit" class="btn-action download">create</button>
+            <button type="button" class="btn-action delete" onclick="closeDialog('myDialog')">cancel</button>
+        </div>
+    </form>
+</dialog>
+
+
+<dialog id="myDialog2" class="custom-dialog">
+    <h3>new file name:</h3>
+    <form method="post" action="/filemanager5/{{currentPath}}" class="dialog-form">
+        <label><input type="text" name="fileName"></label>
+        <div>
+            <button type="submit" class="btn-action download">create</button>
+            <button type="button" class="btn-action delete" onclick="closeDialog('myDialog2')">cancel</button>
+        </div>
+    </form>
+</dialog>
+
+<dialog id="myDialog3" class="custom-dialog">
+    <h3>rename folder: {{#each trail}}/{{encodeURIComponent this.name}}{{/each}}</h3>
+    <form action="/rename-folder/{{currentPath}}" method="POST">
+        <label><input type="hidden" name="oldName" value="{{currentFolderName}}"></label>
+        <label><input type="text" name="newName" required></label>
+        <div>
+            <button type="submit" class="btn-action download">rename</button>
+            <button type="button" class="btn-action delete" onclick="closeDialog('myDialog3')">cancel</button>
+        </div>
+    </form>
+</dialog>
+
+<script>
+    function myFunction() {
+        document.getElementById("myDialog").showModal();
+    }
+    function myFunction2() {
+        document.getElementById("myDialog2").showModal();
+    }
+    function myFunction3() {
+        document.getElementById("myDialog3").showModal();
+    }
+    function closeDialog(dialogId) {
+        document.getElementById(dialogId).close();
+    }
+</script>

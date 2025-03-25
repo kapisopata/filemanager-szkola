@@ -1,0 +1,500 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background: #333;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+nav a:hover {
+    background: #555;
+}
+
+/* Container */
+.container {
+    display: flex;
+    padding: 20px;
+}
+
+/* Sidebar */
+aside {
+    width: 200px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+    text-align: center;
+}
+
+/* Main */
+main {
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Stylizacja menu */
+#menu-remove {
+    background-color: #dc3545;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    margin: 20px 0;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#menu-remove:hover {
+    background-color: #b02a37;
+}
+
+/* Styl ID box */
+.menu-item {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* Efekt kliknięcia przycisku */
+.btn-action:active {
+    transform: scale(0.95);
+}
+
+/* Nagłówek listy plików */
+.file-header {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Lista plików */
+.file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Plik jako rząd */
+.file-item {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+
+/* ID */
+.file-id {
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Rozszerzenie */
+.ext-box {
+    padding: 5px;
+    margin-left: 20px;
+    max-width: 50px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* Nazwa, rozmiar, typ */
+.file-name,
+.file-size,
+.file-type {
+    text-align: center;
+}
+
+/* Linki */
+.btn-action {
+    display: inline-block;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+}
+
+/* Kolory */
+.show {
+    background: #007bff;
+}
+
+.info {
+    background: #ffc107;
+}
+
+.download {
+    background: #28a745;
+}
+
+.delete {
+    background: #dc3545;
+}
+
+/* Hover */
+.show:hover {
+    background: #0056b3;
+}
+
+.info:hover {
+    background: #e0a800;
+}
+
+.download:hover {
+    background: #218838;
+}
+
+.delete:hover {
+    background: #c82333;
+}
+
+/* Styl uploadu */
+.upload-box {
+    background: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.upload-box form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#lab121 {
+    background: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#lab121:hover {
+    background: #0056b3;
+}
+
+#uploadBtn {
+    background: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#uploadBtn:hover {
+    background: #218838;
+}
+
+
+/* Podstrona info */
+.file-info {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin: 5px 0;
+    display: inline-block;
+    width: 98%;
+}
+
+
+
+
+#container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.image-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.custom-dialog {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+    max-width: 90%;
+    background: #fff;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.menu-item:hover {
+    background: #0056b3;
+}
+
+.main-box h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.main-box hr {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 20px 0;
+}
+
+.items-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.item,
+.item_2 {
+    border: 2px dashed #007bff;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    width: 115px;
+}
+
+.item .icon {
+    font-weight: bold;
+    background: #007bff;
+    color: white;
+    padding: 5px;
+    width: 50px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.item_2 .icon {
+    font-weight: bold;
+    background: #ffc107;
+    color: white;
+    padding: 5px;
+    width: 50px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.item .name,
+.item_2 .name {
+    overflow: hidden;
+    color: #007bff;
+}
+
+.delete_x a {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #007bff;
+
+}
+
+.item .delete_x a:hover,
+.item_2 .delete_x a:hover {
+    color: #c82333;
+}
+
+.folder {
+    display: inline-block;
+}
+
+
+
+/* fm 4 */
+
+.editor-container {
+    position: relative;
+    margin: 20px;
+    border-radius: 5px;
+    background: lightgray;
+    display: flex;
+}
+
+.line-numbers {
+    width: 40px;
+    padding: 10px;
+    background-color: lightgrey;
+    text-align: right;
+    font-size: 14px;
+    line-height: 20px;
+    color: #0056b3;
+    overflow: hidden;
+    border-right: 4px solid #007bff;
+}
+
+.code-editor {
+    flex: 1;
+    min-height: 200px;
+    padding: 10px;
+    border: none;
+    font-size: 14px;
+    line-height: 20px;
+    background: lightgray;
+    outline: none;
+    resize: none;
+}
+
+.save-button {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 60px;
+}
+
+.save-button:hover {
+    background: #218838;
+}
+
+select {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+.menu-item button {
+    width: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+}
+
+.menu-item button:hover {
+    background-color: #0056b3;
+}
+
+.menu-item .font-control {
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.menu-item .middle-btn {
+    width: 70px;
+}
+
+
+
+/* fm 5 */
+
+#panel {
+    width: 0px;
+    transition: width 1s;
+    overflow: hidden;
+    background-color: lightblue;
+    text-align: center;
+    color: #007bff;
+    border-radius: 5px;
+}
+
+
+.filter-label {
+    height: 50px;
+    width: 50px;
+    margin: 15px;
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px dashed #007bff;
+}
+
+#text {
+    margin: 20px;
+}
+
+/* #imagePreview {
+    width: 500px;
+    height: 500px;
+} */
+
+.main-box .folder2 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+.main-box .folder2 h3 a {
+    color: #0066cc;
+}
+
+#dimens {
+    font-size: 14px;
+    color: gray;
+    background-color: #e9e9e9;
+    padding: 4px;
+    border-radius: 5px;
+}

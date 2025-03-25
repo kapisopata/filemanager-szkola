@@ -1,0 +1,40 @@
+<nav>
+    <a href="/">upload</a>
+    <a href="/filemanager">filemanager</a>
+    <a href="/info">info</a>
+    <a href="/filemanager2">filemanager2</a>
+    <a href="/filemanager3">filemanager3</a>
+    <a href="/filemanager4">filemanager4</a>
+    <a href="/filemanager5">filemanager5</a>
+</nav>
+
+<div class="container">
+    <aside>
+        <p class="menu-item">filemanager</p>
+        <div>
+            <a href="/reset/{{id}}" class="btn-action delete">remove file data from array</a>
+        </div>
+    </aside>
+
+    <main>
+        <div class="file-header">
+            <span>ID</span>
+            <span>Icon</span>
+            <span>Name</span>
+            <span>Size</span>
+            <span>Type</span>
+            <span>*</span>
+            <span>*</span>
+            <span>*</span>
+            <span>*</span>
+        </div>
+
+        <ul class="file-list">
+            {{#each uploadedFiles}}
+            {{> jedenbook}}
+            {{/each}}
+        </ul>
+
+
+    </main>
+</div>

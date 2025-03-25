@@ -1,0 +1,222 @@
+<nav>
+    <a href="/">upload</a>
+    <a href="/filemanager">filemanager</a>
+    <a href="/info">info</a>
+    <a href="/filemanager2">filemanager2</a>
+    <a href="/filemanager3">filemanager3</a>
+    <a href="/filemanager4">filemanager4</a>
+    <a href="/filemanager5">filemanager5</a>
+</nav>
+
+<div class="container">
+    <aside>
+        <div class="menu-item">
+            <button class="font-control font-decrease">-</button>
+            <button class="middle-btn">colors</button>
+            <button class="font-control font-increase">+</button>
+        </div>
+        <div class="menu-item" onclick="myFunction2()">save config</div>
+        <div class="menu-item" onclick="myFunction3()">rename file</div>
+    </aside>
+
+    <main>
+        <div class="main-box">
+            <div>
+
+                <div class="folder">
+                    <h3>preview file - <a href="/preview?name={{encodeURI currentFileName}}">[/{{encodeURI
+                            currentFileName}}]</a>
+                    </h3>
+                </div>
+            </div>
+            <div class="editor-container">
+                <div class="line-numbers" id="lineNumbers">1</div>
+                <textarea id="textarea" class="code-editor" onscroll="syncScroll()">{{content}}</textarea>
+            </div>
+            <div>
+                <div class="save-button" onclick="saveFile()">save file</div>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<dialog id="myDialog3" class="custom-dialog">
+    <h3>rename file: /{{encodeURIComponent currentFileName}}</h3>
+    <form action="/rename-file/{{currentDirectoryPath}}" method="POST">
+        <label><input type="hidden" name="oldName" value="{{currentFileName}}"></label>
+        <label>
+            <input type="text" name="newName" required>
+        </label>
+        <label>
+            <select name="select">
+                <option value=".html" {{#if (eq currentExtension ".html" )}}selected{{/if}}>.html</option>
+                <option value=".js" {{#if (eq currentExtension ".js" )}}selected{{/if}}>.js</option>
+                <option value=".css" {{#if (eq currentExtension ".css" )}}selected{{/if}}>.css</option>
+                <option value=".json" {{#if (eq currentExtension ".json" )}}selected{{/if}}>.json</option>
+            </select>
+        </label>
+        <div>
+            <button type="submit" class="btn-action download">rename</button>
+            <button type="button" class="btn-action delete" onclick="closeDialog('myDialog3')">cancel</button>
+        </div>
+    </form>
+</dialog>
+
+
+<script>
+    function myFunction() {
+        document.getElementById("myDialog").showModal();
+    }
+    function myFunction2() {
+        saveEditorConfig();
+    }
+    function myFunction3() {
+        document.getElementById("myDialog3").showModal();
+    }
+    function closeDialog(dialogId) {
+        document.getElementById(dialogId).close();
+    }
+
+
+
+    // dynamiczne divy
+    document.getElementById("textarea").onkeyup = function () {
+        let textarea = document.getElementById('textarea');
+        let lineNumbers = document.getElementById('lineNumbers');
+
+        let lines = textarea.value.split("\n");
+        let lineCount = lines.length;
+
+        let text = '';
+        for (let i = 1; i <= lineCount; i++) {
+            text += `<div>${i}</div>`;
+        }
+        lineNumbers.innerHTML = text;
+    }
+
+
+
+    // zapis pliku
+    function saveFile() {
+        let textarea = document.getElementById('textarea');
+        let fileName = '{{fileName}}';
+        let content = textarea.value;
+
+        fetch(`/save-file/${encodeURIComponent(fileName)}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ content }),
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('plik został zapisany', 'success');
+                }
+            })
+            .catch(error => console.log(error));
+    }
+
+
+
+    // zmiana fonta
+    let fontSize = 14;
+
+    function changeFontSize(step) {
+        fontSize += step;
+
+        if (fontSize < 10) fontSize = 10;
+        if (fontSize > 24) fontSize = 24;
+
+        updateFontSize();
+    }
+
+    function updateFontSize() {
+        let textarea = document.getElementById('textarea');
+        let lineNumbers = document.getElementById('lineNumbers');
+
+        textarea.style.fontSize = `${fontSize}px`;
+        lineNumbers.style.fontSize = `${fontSize}px`;
+    }
+
+    document.querySelector('.font-decrease').addEventListener('click', () => changeFontSize(-2));
+    document.querySelector('.font-increase').addEventListener('click', () => changeFontSize(2));
+
+    window.onload = updateFontSize;
+
+
+
+    // zmiana backgroundu
+    let currentColorIndex = 0;
+    let colors = ['green', 'purple', ''];
+
+    function changeBackgroundColor() {
+        let textarea = document.getElementById('textarea');
+        let lineNumbers = document.getElementById('lineNumbers');
+
+        textarea.style.backgroundColor = colors[currentColorIndex];
+        lineNumbers.style.backgroundColor = colors[currentColorIndex];
+
+        currentColorIndex = (currentColorIndex + 1) % colors.length;
+    }
+
+    document.querySelector('.middle-btn').addEventListener('click', changeBackgroundColor);
+
+
+
+    // zapis konfigu
+    function saveEditorConfig() {
+        let textarea = document.getElementById('textarea');
+        let lineNumbers = document.getElementById('lineNumbers');
+
+        let data = {
+            backgroundColor: textarea.style.backgroundColor || 'lightgrey',
+            fontSize: textarea.style.fontSize || '14px'
+        };
+
+        fetch('/save-editor-config', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('ustawienia edytora zapisane', 'success');
+                }
+            })
+            .catch(error => console.log(error));
+    }
+
+
+
+    // wczytanie konfigu
+    function loadEditorConfig() {
+        fetch('/get-editor-config')
+            .then(response => response.json())
+            .then(data => {
+                if (data.backgroundColor) {
+                    document.getElementById('textarea').style.backgroundColor = data.backgroundColor;
+                    document.getElementById('lineNumbers').style.backgroundColor = data.backgroundColor;
+                }
+                if (data.fontSize) {
+                    fontSize = parseInt(data.fontSize);
+                    updateFontSize();
+                }
+            })
+            .catch(error => console.log(error));
+    }
+
+
+    // wczytanie konfigu przy starcie strony
+    window.onload = () => {
+        updateFontSize();
+        loadEditorConfig();
+    };
+</script>
