@@ -7,7 +7,6 @@ const fs = require("fs");
 const path = require('path');
 const hbs = require('express-handlebars');
 app.set('views', path.join(__dirname, 'views'));
-// app.engine('hbs', hbs({ defaultLayout: 'main.hbs' }));
 app.engine('hbs', hbs({
     defaultLayout: 'main.hbs',
     helpers: {
@@ -1384,6 +1383,8 @@ app.get('/image-view/*', function (req, res) {
         { name: "original", image_path: `/image/${fileName}`, }
     ];
 
+    // console.log(fileName);
+
     res.render("image.hbs", {
         imageUrl: `/image/${fileName}`,
         fileName,
@@ -1394,37 +1395,46 @@ app.get('/image-view/*', function (req, res) {
 });
 
 app.post("/save-image", function (req, res) {
+    const relativePath = decodeURIComponent(req.query.name);
+    const absolutePath = path.join(__dirname, 'files', relativePath);
+    const uploadDir = path.dirname(absolutePath);
 
-    let relativePath = req.query.name;
-    let currentDir = path.join(__dirname, 'files', relativePath);
-    let { name, effect } = req.body;
-    let fullPath = path.join(currentDir, name);
+    // console.log("File save details:", { relativePath, absolutePath, uploadDir });
 
-    const form = new formidable.IncomingForm();
-    form.uploadDir = currentDir;
-    form.keepExtensions = true;
-    console.log(form);
+    const form = new formidable.IncomingForm({
+        uploadDir: uploadDir,
+        keepExtensions: true,
+        filename: () => path.basename(absolutePath)
+    });
 
-    form.parse(req, function (err, fields, files) {
+    form.parse(req, (err, fields, files) => {
         if (err) throw err;
-        // let file = files.image;
-        // let oldPath = file.path;
-        // let newPath = path.join(currentDir, `${name}.${file.extension}`);
-        // fs.rename(oldPath, newPath, (err) => {
-        //     if (err) throw err;
-        //     console.log("Plik zapisany: ", name);
-        //     res.redirect(`/image-view/${relativePath}`);
-        // });\
 
+        const oldPath = files.image.path;
 
-    })
+        fs.rename(oldPath, absolutePath, (err) => {
+            if (err) throw err;
 
+            res.json({ success: true, path: relativePath, message: "file saved" });
+        });
+    });
 });
 
 
 app.get('/image-preview/*', (req, res) => {
-    let fileName = req.params[0];
-    let filePath = path.join(__dirname, "files", fileName);
+    let filePath = path.join(__dirname, "files", req.query.path.slice(6));
+
+    // console.log(req.query.path.slice(6));
+
+    // console.log({
+    //     fileName,
+    //     filePath,
+    //     params: req.params,
+    //     query: req.query
+    // });
+
+    // console.log("Podgląd obrazka212:", req.params);
+    // console.log("Podgląd obrazka:", fileName);
 
     res.sendFile(filePath);
 });
@@ -1453,62 +1463,6 @@ app.get('/preview', (req, res) => {
         res.send(data);
     });
 });
-
-
-
-// Endpoint do przesyłania plików
-app.post('/upl', (req, res) => {
-    let relativePath = req.params[0];
-    const form = formidable({
-        keepExtensions: true,
-        uploadDir: path.join(__dirname, 'files'),
-        filename: (name, ext, part) => {
-            // Sprawdź czy nazwa pliku istnieje
-            if (!part.originalFilename) {
-                const extFromType = part.mimetype.split('/')[1] || 'dat';
-                return `image_${Date.now()}.${extFromType}`;
-            }
-
-            const parsed = path.parse(part.originalFilename);
-            let counter = 1;
-            let newName = part.originalFilename;
-
-            while (fs.existsSync(path.join(__dirname, 'files', newName))) {
-                newName = `${parsed.name}_${counter}${parsed.ext}`;
-                counter++;
-            }
-
-            return newName;
-        }
-    });
-
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return res.status(500).json({
-                success: false,
-                error: 'Błąd przetwarzania pliku'
-            });
-        }
-
-        // res.json({
-        //     success: true,
-        //     filename: files.image.newFilename
-        // });
-        res.redirect(`/image-view/${relativePath}`)
-    });
-});
-
-
-// app.get('/upl', (req, res) => {
-//     res.redirect('/image-view');
-// });
-
-
-
-
-
-
-
 
 
 app.listen(PORT, function () {

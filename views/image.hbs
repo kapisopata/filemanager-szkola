@@ -12,9 +12,9 @@
     <aside>
         <div class="menu-item" onclick="togglePanel()" id="filters">filters</div>
         <div class="menu-item" onclick="myFunction3()">rename file</div>
-        <form action="/upl" method="post" enctype="multipart/form-data" id="saveForm">
+        <form enctype="multipart/form-data" id="saveForm" onsubmit="return false;">
             <input type="file" id="fileInput" name="image" accept="image/*" hidden />
-            <button id="saveButton" onclick="uploadImage()">Save Changes</button>
+            <button class="menu-item" id="saveButton" onclick="uploadImage()">Save Changes</button>
         </form>
     </aside>
 
@@ -33,7 +33,8 @@
     <main>
         <div class="main-box">
             <div class="folder2">
-                <h3 id="">preview file - <a href="/image-preview/{{encodeURI currentFileName}}">[/{{encodeURI
+                <h3 id="">preview file - <a
+                        href="/image-preview/{{encodeURI currentFileName}}?path={{imageUrl}}">[/{{encodeURI
                         currentFileName}}]</a>
                 </h3>
                 <div id="dimens"></div>
@@ -72,15 +73,6 @@
 
 
 <script>
-
-
-
-    function myFunction2() {
-        //const canvas = document.getElementById('canvas');
-        //const imageData = canvas.toDataURL();
-        //document.getElementById('imageData').value = imageData;
-        alert("file saved");
-    }
 
     function myFunction3() {
         document.getElementById("myDialog3").showModal();
@@ -139,29 +131,38 @@
 
 
     function uploadImage() {
-        canvas.toBlob(async (blob) => {
-            if (!blob || blob.size === 0) {
-                alert('Canvas is empty!');
-                return;
-            }
+        event.preventDefault();
 
-            const filename = currentFileName;
+        const image = document.getElementById('imagePreview');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+
+        ctx.filter = image.style.filter || 'none';
+        ctx.drawImage(image, 0, 0);
+
+        const currentFileName = window.location.pathname.split('/image-view/')[1];
+
+        canvas.toBlob((blob) => {
             const formData = new FormData();
-            formData.append('image', blob, filename);
+            formData.append('image', blob, currentFileName);
 
-            try {
-                const response = await fetch('/save-image', {
-                    method: 'POST',
-                    body: formData
+            fetch(`/save-image?name=${encodeURIComponent(currentFileName)}`, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('file saved');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error' + error.message);
                 });
-
-                const result = await response.json();
-                if (result.success) {
-                    alert(`Zapisano jako: ${result.filename}`);
-                }
-            } catch (error) {
-                console.error('Błąd:', error);
-            }
         }, 'image/png');
     }
 
