@@ -11,7 +11,7 @@
 <div class="container">
     <aside>
         <div class="menu-item" onclick="myFunction()">new folder</div>
-        {{#if (gt breadcrumb.length 1)}}
+        {{#if (gt trail.length 1)}}
         <div class="menu-item" onclick="myFunction3()">rename folder</div>
         {{/if}}
         <div class="menu-item" onclick="myFunction2()">new file</div>
@@ -28,7 +28,7 @@
     <main>
         <div class="main-box">
             <div>
-                {{#each breadcrumb}}
+                {{#each trail}}
                 <div class="folder"><a href="/filemanager3/{{encodeURI this.path}}">[{{encodeURI this.name}}]</a>
                 </div>
                 {{/each}}
@@ -68,7 +68,7 @@
 
 
 <dialog id="myDialog" class="custom-dialog">
-    <h3>new folder name: {{#each breadcrumb}}/{{encodeURIComponent this.name}}{{/each}}</h3>
+    <h3>new folder name: {{#each trail}}/{{encodeURIComponent this.name}}{{/each}}</h3>
     <form method="post" action="/filemanager3/{{currentPath}}" class="dialog-form">
         <label><input type="text" name="folderName"></label>
         <div>
@@ -91,7 +91,7 @@
 </dialog>
 
 <dialog id="myDialog3" class="custom-dialog">
-    <h3>rename folder: {{#each breadcrumb}}/{{encodeURIComponent this.name}}{{/each}}</h3>
+    <h3>rename folder: {{#each trail}}/{{encodeURIComponent this.name}}{{/each}}</h3>
     <form action="/rename-folder/{{currentPath}}" method="POST">
         <label><input type="hidden" name="oldName" value="{{currentFolderName}}"></label>
         <label><input type="text" name="newName" required></label>

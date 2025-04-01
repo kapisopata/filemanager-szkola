@@ -146,12 +146,12 @@
         const currentFileName = window.location.pathname.split('/image-view/')[1];
 
         canvas.toBlob((blob) => {
-            const formData = new FormData();
-            formData.append('image', blob, currentFileName);
+            const fm = new FormData();
+            fm.append('image', blob, currentFileName);
 
             fetch(`/save-image?name=${encodeURIComponent(currentFileName)}`, {
                 method: 'POST',
-                body: formData
+                body: fm
             })
                 .then(response => response.json())
                 .then(data => {
