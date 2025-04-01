@@ -52,7 +52,10 @@
 <dialog id="myDialog3" class="custom-dialog">
     <h3>rename file: /{{encodeURIComponent currentFileName}}</h3>
     <form action="/rename-file/{{currentDirectoryPath}}" method="POST">
+        <label><input type="hidden" name="path" value="{{currentFileName}}"></label>
         <label><input type="hidden" name="oldName" value="{{currentFileName}}"></label>
+        <input type="hidden" name="dirname" value="{{imageUrl2}}">
+
         <label>
             <input type="text" name="newName" required>
         </label>
