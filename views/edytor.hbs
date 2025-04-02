@@ -48,6 +48,9 @@
         <label>
             <input type="text" name="newName" required>
         </label>
+        <label><input type="hidden" name="path" value="{{currentFileName}}"></label>
+        <label><input type="hidden" name="oldName" value="{{currentFileName}}"></label>
+        <input type="hidden" name="dirname" value="{{imageUrl2}}">
         <label>
             <select name="select">
                 <option value=".html" {{#if (eq currentExtension ".html" )}}selected{{/if}}>.html</option>

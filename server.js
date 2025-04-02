@@ -317,292 +317,292 @@ app.get("/reset", function (req, res) {
 
 // - - - - - - - - - - - - - - -  czesc 3
 
-// app.get('/filemanager3', function (req, res) {
-//     let currentPath = path.join(__dirname, "files");
-//     let relativePath = "";
+app.get('/filemanager3', function (req, res) {
+    let currentPath = path.join(__dirname, "files");
+    let relativePath = "";
 
-//     let trail = [{ name: "files", path: "" }];
+    let trail = [{ name: "files", path: "" }];
 
-//     fs.readdir(currentPath, (err, files) => {
-//         if (err) throw err;
+    fs.readdir(currentPath, (err, files) => {
+        if (err) throw err;
 
-//         let uploadedFolders = [];
-//         let uploadedFiles = [];
-//         let processed = 0;
+        let uploadedFolders = [];
+        let uploadedFiles = [];
+        let processed = 0;
 
-//         if (files.length === 0) {
-//             return res.render('filemanager3', {
-//                 uploadedFolders,
-//                 uploadedFiles,
-//                 currentPath: relativePath,
-//                 trail,
-//                 currentFolderName: path.basename(relativePath)
-//             });
-//         }
+        if (files.length === 0) {
+            return res.render('filemanager3', {
+                uploadedFolders,
+                uploadedFiles,
+                currentPath: relativePath,
+                trail,
+                currentFolderName: path.basename(relativePath)
+            });
+        }
 
-//         files.forEach((file) => {
-//             let filePath = path.join(currentPath, file);
+        files.forEach((file) => {
+            let filePath = path.join(currentPath, file);
 
-//             fs.lstat(filePath, (err, stats) => {
-//                 if (err) throw err;
+            fs.lstat(filePath, (err, stats) => {
+                if (err) throw err;
 
-//                 if (stats.isDirectory()) {
-//                     uploadedFolders.push({
-//                         name: file,
-//                         icon: "DIR",
-//                         path: file,
-//                     });
-//                 } else {
-//                     let extension = path.extname(file);
-//                     let icon;
-//                     if (extension == ".txt") icon = "TXT"
-//                     else if (extension == ".jpg") icon = "JPG"
-//                     else if (extension == ".jpeg") icon = "JPEG"
-//                     else if (extension == ".gif") icon = "GIF"
-//                     else if (extension == ".png") icon = "PNG"
-//                     else if (extension == ".ico") icon = "ICO"
-//                     else if (extension == ".html") icon = "HTML"
-//                     else if (extension == ".css") icon = "CSS"
-//                     else if (extension == ".js") icon = "JS"
-//                     else if (extension == ".json") icon = "JSON"
-//                     else { icon = "---" }
+                if (stats.isDirectory()) {
+                    uploadedFolders.push({
+                        name: file,
+                        icon: "DIR",
+                        path: file,
+                    });
+                } else {
+                    let extension = path.extname(file);
+                    let icon;
+                    if (extension == ".txt") icon = "TXT"
+                    else if (extension == ".jpg") icon = "JPG"
+                    else if (extension == ".jpeg") icon = "JPEG"
+                    else if (extension == ".gif") icon = "GIF"
+                    else if (extension == ".png") icon = "PNG"
+                    else if (extension == ".ico") icon = "ICO"
+                    else if (extension == ".html") icon = "HTML"
+                    else if (extension == ".css") icon = "CSS"
+                    else if (extension == ".js") icon = "JS"
+                    else if (extension == ".json") icon = "JSON"
+                    else { icon = "---" }
 
-//                     let fileRelativePath = path.join(relativePath, file);
+                    let fileRelativePath = path.join(relativePath, file);
 
-//                     uploadedFiles.push({
-//                         name: file,
-//                         icon: icon,
-//                         path: fileRelativePath,
-//                     });
-//                 }
+                    uploadedFiles.push({
+                        name: file,
+                        icon: icon,
+                        path: fileRelativePath,
+                    });
+                }
 
-//                 processed++;
-//                 if (processed === files.length) {
-//                     res.render("filemanager3.hbs", {
-//                         uploadedFolders,
-//                         uploadedFiles,
-//                         currentPath: relativePath,
-//                         trail,
-//                         currentFolderName: path.basename(relativePath)
-//                     });
-//                 };
-//             });
-//         });
-//     });
-// });
-
-
-// app.get("/filemanager3/*", function (req, res) {
-//     let relativePath = req.params[0];
-//     let currentPath = path.join(__dirname, "files", relativePath);
-
-//     if (!fs.existsSync(currentPath)) {
-//         return res.status(404).send('path nie istnieje');
-//     }
-
-//     let pathParts = relativePath.split('/').filter(part => part);
-//     let trail = [{ name: "files", path: "" }];
-
-//     for (let i = 0; i < pathParts.length; i++) {
-//         let part = pathParts[i];
-//         let currentPath = "";
-
-//         for (let j = 0; j <= i; j++) {
-//             currentPath += (j > 0 ? "/" : "") + pathParts[j];
-//         }
-
-//         trail.push({
-//             name: part,
-//             path: currentPath
-//         });
-//     }
-
-//     fs.readdir(currentPath, (err, files) => {
-//         if (err) throw err;
-
-//         let uploadedFolders = [];
-//         let uploadedFiles = [];
-//         let processed = 0;
-
-//         if (files.length === 0) {
-//             return res.render('filemanager3', {
-//                 uploadedFolders,
-//                 uploadedFiles,
-//                 currentPath: relativePath,
-//                 trail,
-//                 currentFolderName: path.basename(relativePath)
-//             });
-//         };
-
-//         files.forEach((file) => {
-//             let filePath = path.join(currentPath, file);
-
-//             fs.lstat(filePath, (err, stats) => {
-//                 if (err) throw err;
-
-//                 if (stats.isDirectory()) {
-//                     uploadedFolders.push({
-//                         name: file,
-//                         icon: "DIR",
-//                         path: path.join(relativePath, file),
-//                     });
-//                 } else {
-//                     let extension = path.extname(file);
-//                     let icon;
-//                     if (extension == ".txt") icon = "TXT"
-//                     else if (extension == ".jpg") icon = "JPG"
-//                     else if (extension == ".jpeg") icon = "JPEG"
-//                     else if (extension == ".gif") icon = "GIF"
-//                     else if (extension == ".png") icon = "PNG"
-//                     else if (extension == ".ico") icon = "ICO"
-//                     else if (extension == ".html") icon = "HTML"
-//                     else if (extension == ".css") icon = "CSS"
-//                     else if (extension == ".js") icon = "JS"
-//                     else if (extension == ".json") icon = "JSON"
-//                     else { icon = "---" }
-
-//                     let fileRelativePath = path.join(relativePath, file);
-
-//                     uploadedFiles.push({
-//                         name: file,
-//                         icon: icon,
-//                         path: fileRelativePath,
-//                     });
-//                 }
-
-//                 processed++;
-//                 if (processed === files.length) {
-//                     res.render("filemanager3.hbs", {
-//                         uploadedFolders,
-//                         uploadedFiles,
-//                         currentPath: relativePath,
-//                         trail,
-//                         currentFolderName: path.basename(relativePath)
-//                     });
-//                 };
-//             });
-//         });
-//     });
-// });
+                processed++;
+                if (processed === files.length) {
+                    res.render("filemanager3.hbs", {
+                        uploadedFolders,
+                        uploadedFiles,
+                        currentPath: relativePath,
+                        trail,
+                        currentFolderName: path.basename(relativePath)
+                    });
+                };
+            });
+        });
+    });
+});
 
 
-// app.post('/filemanager3/*', function (req, res) {
-//     let relativePath = req.params[0];
-//     let currentPath = path.join(__dirname, 'files', relativePath);
+app.get("/filemanager3/*", function (req, res) {
+    let relativePath = req.params[0];
+    let currentPath = path.join(__dirname, "files", relativePath);
 
-//     let { fileName, folderName } = req.body;
+    if (!fs.existsSync(currentPath)) {
+        return res.status(404).send('path nie istnieje');
+    }
 
-//     if (fileName) {
-//         let newFileName = path.basename(fileName);
-//         let filePath = path.join(currentPath, newFileName);
-//         let counter = 1;
+    let pathParts = relativePath.split('/').filter(part => part);
+    let trail = [{ name: "files", path: "" }];
 
-//         while (fs.existsSync(filePath)) {
-//             filePath = path.join(currentPath, `kopia_${counter}_${newFileName}`);
-//             counter++;
-//         }
-//         fs.writeFile(filePath, 'tekst do wpisania', (err) => {
-//             if (err) throw err;
-//             console.log("plik dodany:", fileName);
-//             res.redirect(`/filemanager3/${relativePath}`);
-//         });
-//     } else if (folderName) {
-//         let newFolderName = path.basename(folderName);
-//         let folderPath = path.join(currentPath, newFolderName);
-//         let counter2 = 1;
+    for (let i = 0; i < pathParts.length; i++) {
+        let part = pathParts[i];
+        let currentPath = "";
 
-//         while (fs.existsSync(folderPath)) {
-//             folderPath = path.join(currentPath, `kopia_${counter2}_${newFolderName}`);
-//             counter2++;
-//         }
-//         fs.mkdir(folderPath, (err) => {
-//             if (err) throw err;
-//             console.log("folder dodany:", folderName);
-//             res.redirect(`/filemanager3/${relativePath}`);
-//         });
-//     } else {
-//         console.log("Nie podano żadnej nazwy");
-//         res.redirect(`/filemanager3/${relativePath}`);
-//     }
-// });
+        for (let j = 0; j <= i; j++) {
+            currentPath += (j > 0 ? "/" : "") + pathParts[j];
+        }
 
+        trail.push({
+            name: part,
+            path: currentPath
+        });
+    }
 
-// app.post('/upload3/*', function (req, res) {
-//     let relativePath = req.params[0];
-//     let currentPath = path.join(__dirname, 'files', relativePath);
+    fs.readdir(currentPath, (err, files) => {
+        if (err) throw err;
 
-//     let form = formidable({});
+        let uploadedFolders = [];
+        let uploadedFiles = [];
+        let processed = 0;
 
-//     form.keepExtensions = true; // zapis z rozszerzeniem pliku
-//     form.multiples = true;
-//     form.uploadDir = currentPath; // folder do zapisu plików
+        if (files.length === 0) {
+            return res.render('filemanager3', {
+                uploadedFolders,
+                uploadedFiles,
+                currentPath: relativePath,
+                trail,
+                currentFolderName: path.basename(relativePath)
+            });
+        };
 
-//     form.parse(req, function (err, fields, files) {
-//         if (err) throw err;
+        files.forEach((file) => {
+            let filePath = path.join(currentPath, file);
 
-//         let fileArray;
-//         if (Array.isArray(files.imagetoupload)) {
-//             fileArray = files.imagetoupload;
-//         }
-//         else {
-//             fileArray = [files.imagetoupload];
-//         }
+            fs.lstat(filePath, (err, stats) => {
+                if (err) throw err;
 
-//         fileArray.forEach((file) => {
-//             let newPath = path.join(currentPath, file.name);
-//             let counter = 1;
+                if (stats.isDirectory()) {
+                    uploadedFolders.push({
+                        name: file,
+                        icon: "DIR",
+                        path: path.join(relativePath, file),
+                    });
+                } else {
+                    let extension = path.extname(file);
+                    let icon;
+                    if (extension == ".txt") icon = "TXT"
+                    else if (extension == ".jpg") icon = "JPG"
+                    else if (extension == ".jpeg") icon = "JPEG"
+                    else if (extension == ".gif") icon = "GIF"
+                    else if (extension == ".png") icon = "PNG"
+                    else if (extension == ".ico") icon = "ICO"
+                    else if (extension == ".html") icon = "HTML"
+                    else if (extension == ".css") icon = "CSS"
+                    else if (extension == ".js") icon = "JS"
+                    else if (extension == ".json") icon = "JSON"
+                    else { icon = "---" }
 
-//             while (fs.existsSync(newPath)) {
-//                 newPath = path.join(currentPath, `kopia_${counter}_${file.name}`);
-//                 counter++;
-//             }
+                    let fileRelativePath = path.join(relativePath, file);
 
-//             fs.rename(file.path, newPath, (err) => {
-//                 if (err) throw err;
-//                 console.log("Plik zapisany: ", file.name);
-//             });
-//         })
+                    uploadedFiles.push({
+                        name: file,
+                        icon: icon,
+                        path: fileRelativePath,
+                    });
+                }
 
-//         res.redirect(`/filemanager3/${relativePath}`);
-//     });
-// });
-
-
-// app.get('/delete-folder/*', (req, res) => {
-//     let folderPath = req.params[0];
-//     let fullPath = path.join(__dirname, 'files', folderPath);
-
-//     fs.rm(fullPath, { recursive: true, force: true }, (err) => {
-//         if (err) throw err;
-//         res.redirect(`/filemanager3/${path.dirname(folderPath)}`);
-//     });
-// });
-
-
-// app.get('/delete-file/*', (req, res) => {
-//     let filePath = req.params[0];
-//     let fullPath = path.join(__dirname, 'files', filePath);
-
-//     fs.unlink(fullPath, (err) => {
-//         if (err) throw err;
-//         res.redirect(`/filemanager3/${path.dirname(filePath)}`);
-//     });
-// });
+                processed++;
+                if (processed === files.length) {
+                    res.render("filemanager3.hbs", {
+                        uploadedFolders,
+                        uploadedFiles,
+                        currentPath: relativePath,
+                        trail,
+                        currentFolderName: path.basename(relativePath)
+                    });
+                };
+            });
+        });
+    });
+});
 
 
-// app.post('/rename-folder/*', (req, res) => {
-//     let relativePath = req.params[0];
-//     let currentPath = path.join(__dirname, 'files', relativePath);
-//     let { oldName, newName } = req.body;
+app.post('/filemanager3/*', function (req, res) {
+    let relativePath = req.params[0];
+    let currentPath = path.join(__dirname, 'files', relativePath);
 
-//     let oldFolderPath = currentPath;
-//     let newFolderPath = path.join(path.dirname(currentPath), newName);
+    let { fileName, folderName } = req.body;
 
-//     fs.rename(oldFolderPath, newFolderPath, (err) => {
-//         if (err) throw err;
-//         res.redirect(`/filemanager3/${path.dirname(relativePath)}`);
-//     });
-// });
+    if (fileName) {
+        let newFileName = path.basename(fileName);
+        let filePath = path.join(currentPath, newFileName);
+        let counter = 1;
+
+        while (fs.existsSync(filePath)) {
+            filePath = path.join(currentPath, `kopia_${counter}_${newFileName}`);
+            counter++;
+        }
+        fs.writeFile(filePath, 'tekst do wpisania', (err) => {
+            if (err) throw err;
+            console.log("plik dodany:", fileName);
+            res.redirect(`/filemanager3/${relativePath}`);
+        });
+    } else if (folderName) {
+        let newFolderName = path.basename(folderName);
+        let folderPath = path.join(currentPath, newFolderName);
+        let counter2 = 1;
+
+        while (fs.existsSync(folderPath)) {
+            folderPath = path.join(currentPath, `kopia_${counter2}_${newFolderName}`);
+            counter2++;
+        }
+        fs.mkdir(folderPath, (err) => {
+            if (err) throw err;
+            console.log("folder dodany:", folderName);
+            res.redirect(`/filemanager3/${relativePath}`);
+        });
+    } else {
+        console.log("Nie podano żadnej nazwy");
+        res.redirect(`/filemanager3/${relativePath}`);
+    }
+});
+
+
+app.post('/upload3/*', function (req, res) {
+    let relativePath = req.params[0];
+    let currentPath = path.join(__dirname, 'files', relativePath);
+
+    let form = formidable({});
+
+    form.keepExtensions = true; // zapis z rozszerzeniem pliku
+    form.multiples = true;
+    form.uploadDir = currentPath; // folder do zapisu plików
+
+    form.parse(req, function (err, fields, files) {
+        if (err) throw err;
+
+        let fileArray;
+        if (Array.isArray(files.imagetoupload)) {
+            fileArray = files.imagetoupload;
+        }
+        else {
+            fileArray = [files.imagetoupload];
+        }
+
+        fileArray.forEach((file) => {
+            let newPath = path.join(currentPath, file.name);
+            let counter = 1;
+
+            while (fs.existsSync(newPath)) {
+                newPath = path.join(currentPath, `kopia_${counter}_${file.name}`);
+                counter++;
+            }
+
+            fs.rename(file.path, newPath, (err) => {
+                if (err) throw err;
+                console.log("Plik zapisany: ", file.name);
+            });
+        })
+
+        res.redirect(`/filemanager3/${relativePath}`);
+    });
+});
+
+
+app.get('/delete-folder/*', (req, res) => {
+    let folderPath = req.params[0];
+    let fullPath = path.join(__dirname, 'files', folderPath);
+
+    fs.rm(fullPath, { recursive: true, force: true }, (err) => {
+        if (err) throw err;
+        res.redirect(`/filemanager3/${path.dirname(folderPath)}`);
+    });
+});
+
+
+app.get('/delete-file/*', (req, res) => {
+    let filePath = req.params[0];
+    let fullPath = path.join(__dirname, 'files', filePath);
+
+    fs.unlink(fullPath, (err) => {
+        if (err) throw err;
+        res.redirect(`/filemanager3/${path.dirname(filePath)}`);
+    });
+});
+
+
+app.post('/rename-folder/*', (req, res) => {
+    let relativePath = req.params[0];
+    let currentPath = path.join(__dirname, 'files', relativePath);
+    let { oldName, newName } = req.body;
+
+    let oldFolderPath = currentPath;
+    let newFolderPath = path.join(path.dirname(currentPath), newName);
+
+    fs.rename(oldFolderPath, newFolderPath, (err) => {
+        if (err) throw err;
+        res.redirect(`/filemanager3/${path.dirname(relativePath)}`);
+    });
+});
 
 
 
@@ -961,29 +961,14 @@ app.get("/reset", function (req, res) {
 //             });
 //         } else {
 //             res.render("edytor.hbs", {
+//                 imageUrl: `/image/${fileName}`,
+//                 imageUrl2: `${fileName}`,
 //                 fileName,
 //                 content: data,
 //                 trail: [{ name: "files", path: "" }],
-//                 currentFileName: path.basename(fileName)
+//                 currentFileName: path.basename(filePath)
 //             });
 //         }
-//     });
-// });
-
-
-// app.post('/rename-file/*', (req, res) => {
-//     let relativePath = req.params[0];
-//     let currentDir = path.join(__dirname, 'files', relativePath);
-//     let { oldName, newName, select } = req.body;
-
-
-//     let oldFilePath = path.join(currentDir, oldName);
-//     let newFilePath = path.join(currentDir, `${newName}${select}`);
-
-
-//     fs.rename(oldFilePath, newFilePath, (err) => {
-//         if (err) throw err;
-//         res.redirect(`/filemanager4/${relativePath}`);
 //     });
 // });
 
@@ -1007,6 +992,7 @@ app.get("/reset", function (req, res) {
 //     // console.log(req.query.path.slice(6));
 
 //     // console.log({
+//     //     fileName,
 //     //     filePath,
 //     //     params: req.params,
 //     //     query: req.query
@@ -1016,6 +1002,30 @@ app.get("/reset", function (req, res) {
 //     // console.log("Podgląd obrazka:", fileName);
 
 //     res.sendFile(filePath);
+// });
+
+
+// app.post('/rename-file/*', (req, res) => {
+//     let relativePath = req.body.dirname;
+//     let parentDir = path.dirname(relativePath);
+//     let { oldName, newName, select } = req.body;
+
+//     console.log(req.body);
+
+//     console.log(parentDir);
+
+
+
+//     let oldFilePath = path.join(__dirname, 'files', relativePath);
+//     let newFilePath = path.join(__dirname, 'files', parentDir, `${newName}${select}`);
+
+//     console.log(parentDir);
+
+
+//     fs.rename(oldFilePath, newFilePath, (err) => {
+//         if (err) throw err;
+//         res.redirect(`/filemanager5/${parentDir}/${newName}${select}`);
+//     });
 // });
 
 
@@ -1056,427 +1066,425 @@ app.get("/reset", function (req, res) {
 // - - - - - - - - - - - - - - -  czesc 5
 
 
-app.get('/filemanager5', function (req, res) {
-    let currentPath = path.join(__dirname, "files");
-    let relativePath = "";
-
-    let trail = [{ name: "files", path: "" }];
-
-    fs.readdir(currentPath, (err, files) => {
-        if (err) throw err;
-
-        let uploadedFolders = [];
-        let uploadedFiles = [];
-        let processed = 0;
-
-        if (files.length === 0) {
-            return res.render('filemanager5', {
-                uploadedFolders,
-                uploadedFiles,
-                currentPath: relativePath,
-                trail,
-                currentFolderName: path.basename(relativePath)
-            });
-        }
-
-        files.forEach((file) => {
-            let filePath = path.join(currentPath, file);
-
-            fs.lstat(filePath, (err, stats) => {
-                if (err) throw err;
-
-                if (stats.isDirectory()) {
-                    uploadedFolders.push({
-                        name: file,
-                        icon: "DIR",
-                        path: file,
-                    });
-                } else {
-                    let extension = path.extname(file);
-                    let icon;
-                    if (extension == ".txt") icon = "TXT"
-                    else if (extension == ".jpg") icon = "JPG"
-                    else if (extension == ".jpeg") icon = "JPEG"
-                    else if (extension == ".gif") icon = "GIF"
-                    else if (extension == ".png") icon = "PNG"
-                    else if (extension == ".ico") icon = "ICO"
-                    else if (extension == ".html") icon = "HTML"
-                    else if (extension == ".css") icon = "CSS"
-                    else if (extension == ".js") icon = "JS"
-                    else if (extension == ".json") icon = "JSON"
-                    else { icon = "---" }
-
-                    let fileRelativePath = path.join(relativePath, file);
-
-                    uploadedFiles.push({
-                        name: file,
-                        icon: icon,
-                        path: fileRelativePath,
-                    });
-                }
-
-                processed++;
-                if (processed === files.length) {
-                    res.render("filemanager5.hbs", {
-                        uploadedFolders,
-                        uploadedFiles,
-                        currentPath: relativePath,
-                        trail,
-                        currentFolderName: path.basename(relativePath)
-                    });
-                };
-            });
-        });
-    });
-});
-
-
-app.get("/filemanager5/*", function (req, res) {
-    let relativePath = req.params[0];
-    let currentPath = path.join(__dirname, "files", relativePath);
-
-    let fileName = path.basename(currentPath);
-
-    let currentExtension = path.extname(fileName);
-    let currentFileNameWithoutExtension = path.basename(fileName, currentExtension);
-
-    if (!fs.existsSync(currentPath)) {
-        return res.status(404).send('path nie istnieje');
-    }
-
-    let pathParts = relativePath.split('/').filter(part => part);
-    let trail = [{ name: "files", path: "" }];
-
-    for (let i = 0; i < pathParts.length; i++) {
-        let part = pathParts[i];
-        let currentPath = "";
-
-        for (let j = 0; j <= i; j++) {
-            currentPath += (j > 0 ? "/" : "") + pathParts[j];
-        }
-
-        trail.push({
-            name: part,
-            path: currentPath
-        });
-    }
-
-    fs.readdir(currentPath, (err, files) => {
-        if (err) throw err;
-
-        let uploadedFolders = [];
-        let uploadedFiles = [];
-        let processed = 0;
-
-        if (files.length === 0) {
-            return res.render('filemanager5', {
-                uploadedFolders,
-                uploadedFiles,
-                currentPath: relativePath,
-                trail,
-                currentFolderName: path.basename(relativePath),
-                currentFileName: fileName,
-                currentExtension,
-                currentFileNameWithoutExtension,
-                currentDirectoryPath: relativePath
-            });
-        };
-
-        files.forEach((file) => {
-            let filePath = path.join(currentPath, file);
-
-            fs.lstat(filePath, (err, stats) => {
-                if (err) throw err;
-
-                if (stats.isDirectory()) {
-                    uploadedFolders.push({
-                        name: file,
-                        icon: "DIR",
-                        path: path.join(relativePath, file),
-                    });
-                } else {
-                    let extension = path.extname(file);
-                    let icon;
-                    if (extension == ".txt") icon = "TXT"
-                    else if (extension == ".jpg") icon = "JPG"
-                    else if (extension == ".jpeg") icon = "JPEG"
-                    else if (extension == ".gif") icon = "GIF"
-                    else if (extension == ".png") icon = "PNG"
-                    else if (extension == ".ico") icon = "ICO"
-                    else if (extension == ".html") icon = "HTML"
-                    else if (extension == ".css") icon = "CSS"
-                    else if (extension == ".js") icon = "JS"
-                    else if (extension == ".json") icon = "JSON"
-                    else { icon = "---" }
-
-                    let fileRelativePath = path.join(relativePath, file);
-
-                    uploadedFiles.push({
-                        name: file,
-                        icon: icon,
-                        path: fileRelativePath,
-                    });
-                }
-
-                processed++;
-                if (processed === files.length) {
-                    res.render("filemanager5.hbs", {
-                        uploadedFolders,
-                        uploadedFiles,
-                        currentPath: relativePath,
-                        trail,
-                        currentFolderName: path.basename(relativePath),
-                        currentFileName: fileName,
-                        currentExtension,
-                        currentFileNameWithoutExtension,
-                        currentDirectoryPath: relativePath
-                    });
-                };
-            });
-        });
-    });
-});
-
-
-app.post('/filemanager5/*', function (req, res) {
-    let relativePath = req.params[0];
-    let currentPath = path.join(__dirname, 'files', relativePath);
-    let { fileName, folderName } = req.body;
-
-    if (fileName) {
-        let newFileName = path.basename(fileName);
-        let filePath = path.join(currentPath, newFileName);
-        let counter = 1;
-
-        while (fs.existsSync(filePath)) {
-            filePath = path.join(currentPath, `kopia_${counter}_${newFileName}`);
-            counter++;
-        }
-
-        let extension = path.extname(fileName);
-        let content = '';
-
-        if (extension == ".txt") icon = "TXT"
-        else if (extension == ".jpg") icon = "JPG"
-        else if (extension == ".jpeg") icon = "JPEG"
-        else if (extension == ".gif") icon = "GIF"
-        else if (extension == ".png") icon = "PNG"
-        else if (extension == ".ico") icon = "ICO"
-        else if (extension == ".html") {
-            icon = "HTML";
-            content = "<h1>hello world</h1>";
-        }
-        else if (extension == ".css") {
-            icon = "CSS";
-            content = "body { background: blue; }";
-        }
-        else if (extension == ".js") {
-            icon = "JS";
-            content = "console.log('js');";
-        }
-        else if (extension == ".json") {
-            icon = "JSON";
-            content = JSON.stringify({ a: 1, b: 2, c: 3 });
-        }
-        else { icon = "---"; content = ''; }
-
-        fs.writeFile(filePath, content, (err) => {
-            if (err) {
-                console.error('Błąd przy zapisywaniu pliku:', err);
-                return res.status(500).send('Błąd serwera');
-            }
-            // console.log('plik utworzony:', newFileName);
-            res.redirect(`/filemanager5/${relativePath}`);
-        });
-
-    } else if (folderName) {
-        let newFolderName = path.basename(folderName);
-        let folderPath = path.join(currentPath, newFolderName);
-        let counter2 = 1;
-
-        while (fs.existsSync(folderPath)) {
-            folderPath = path.join(currentPath, `kopia_${counter2}_${newFolderName}`);
-            counter2++;
-        }
-        fs.mkdir(folderPath, (err) => {
-            if (err) throw err;
-            // console.log("folder utworzony:", folderName);
-            res.redirect(`/filemanager5/${relativePath}`);
-        });
-    } else {
-        console.log("Nie podano żadnej nazwy");
-        res.redirect(`/filemanager5/${relativePath}`);
-    }
-});
-
-
-app.post('/upload5/*', function (req, res) {
-    let relativePath = req.params[0];
-    let currentPath = path.join(__dirname, 'files', relativePath);
-
-    let form = formidable({});
-
-    form.keepExtensions = true; // zapis z rozszerzeniem pliku
-    form.multiples = true;
-    form.uploadDir = currentPath; // folder do zapisu plików
-
-    form.parse(req, function (err, fields, files) {
-        if (err) throw err;
-
-        let fileArray;
-        if (Array.isArray(files.imagetoupload)) {
-            fileArray = files.imagetoupload;
-        }
-        else {
-            fileArray = [files.imagetoupload];
-        }
-
-        fileArray.forEach((file) => {
-            let newPath = path.join(currentPath, file.name);
-            let counter = 1;
-
-            while (fs.existsSync(newPath)) {
-                newPath = path.join(currentPath, `kopia_${counter}_${file.name}`);
-                counter++;
-            }
-
-            fs.rename(file.path, newPath, (err) => {
-                if (err) throw err;
-                console.log("Plik zapisany: ", file.name);
-            });
-        })
-
-        res.redirect(`/filemanager5/${relativePath}`);
-    });
-});
-
-
-app.get('/delete-folder/*', (req, res) => {
-    let folderPath = req.params[0];
-    let fullPath = path.join(__dirname, 'files', folderPath);
-
-    fs.rm(fullPath, { recursive: true, force: true }, (err) => {
-        if (err) throw err;
-        res.redirect(`/filemanager5/${path.dirname(folderPath)}`);
-    });
-});
-
-
-app.get('/delete-file/*', (req, res) => {
-    let filePath = req.params[0];
-    let fullPath = path.join(__dirname, 'files', filePath);
-
-    fs.unlink(fullPath, (err) => {
-        if (err) throw err;
-        res.redirect(`/filemanager5/${path.dirname(filePath)}`);
-    });
-});
-
-
-app.get('/image/*', function (req, res) {
-    const fileName = req.params[0];
-    const filePath = path.join(__dirname, "files", fileName);
-
-    res.sendFile(filePath);
-});
-
-
-app.get('/image-view/*', function (req, res) {
-    let fileName = req.params[0];
-    console.log(req.params);
-
-    let filePath = path.join("files", fileName);
-
-    const effects = [
-        { name: "grayscale", image_path: `/image/${fileName}`, },
-        { name: "contrast", image_path: `/image/${fileName}`, },
-        { name: "invert", image_path: `/image/${fileName}`, },
-        { name: "sepia", image_path: `/image/${fileName}`, },
-        { name: "original", image_path: `/image/${fileName}`, }
-    ];
-
-    // console.log(fileName);
-
-    res.render("image.hbs", {
-        imageUrl: `/image/${fileName}`,
-        imageUrl2: `/${fileName}`,
-        fileName,
-        currentFileName: path.basename(filePath),
-        effects
-    });
-
-});
-
-app.post("/save-image", function (req, res) {
-    const relativePath = decodeURIComponent(req.query.name);
-    const absolutePath = path.join(__dirname, 'files', relativePath);
-    const uploadDir = path.dirname(absolutePath);
-
-    // console.log("File save details:", { relativePath, absolutePath, uploadDir });
-
-    const form = new formidable.IncomingForm({
-        uploadDir: uploadDir,
-        keepExtensions: true,
-        filename: () => path.basename(absolutePath)
-    });
-
-    form.parse(req, (err, fields, files) => {
-        if (err) throw err;
-
-        const oldPath = files.image.path;
-
-        fs.rename(oldPath, absolutePath, (err) => {
-            if (err) throw err;
-
-            res.json({ success: true, path: relativePath, message: "file saved" });
-        });
-    });
-});
-
-
-app.get('/image-preview/*', (req, res) => {
-    let filePath = path.join(__dirname, "files", req.query.path.slice(6));
-
-    // console.log(req.query.path.slice(6));
-
-    // console.log({
-    //     fileName,
-    //     filePath,
-    //     params: req.params,
-    //     query: req.query
-    // });
-
-    // console.log("Podgląd obrazka212:", req.params);
-    // console.log("Podgląd obrazka:", fileName);
-
-    res.sendFile(filePath);
-});
-
-
-app.post('/rename-file/*', (req, res) => {
-    let relativePath = req.body.dirname;
-    let parentDir = path.dirname(relativePath);
-    let { oldName, newName, select } = req.body;
-
-    let oldFilePath = path.join(__dirname, 'files', relativePath);
-    let newFilePath = path.join(__dirname, 'files', parentDir, `${newName}${select}`);
-
-    fs.rename(oldFilePath, newFilePath, (err) => {
-        if (err) throw err;
-        res.redirect(`/filemanager5/${parentDir}`);
-    });
-});
-
-
-app.get('/preview', (req, res) => {
-    let relativePath = req.query.name;
-
-    let fullPath = path.join(__dirname, 'files', relativePath);
-
-    fs.readFile(fullPath, 'utf8', (err, data) => {
-        res.send(data);
-    });
-});
+// app.get('/filemanager5', function (req, res) {
+//     let currentPath = path.join(__dirname, "files");
+//     let relativePath = "";
+
+//     let trail = [{ name: "files", path: "" }];
+
+//     fs.readdir(currentPath, (err, files) => {
+//         if (err) throw err;
+
+//         let uploadedFolders = [];
+//         let uploadedFiles = [];
+//         let processed = 0;
+
+//         if (files.length === 0) {
+//             return res.render('filemanager5', {
+//                 uploadedFolders,
+//                 uploadedFiles,
+//                 currentPath: relativePath,
+//                 trail,
+//                 currentFolderName: path.basename(relativePath)
+//             });
+//         }
+
+//         files.forEach((file) => {
+//             let filePath = path.join(currentPath, file);
+
+//             fs.lstat(filePath, (err, stats) => {
+//                 if (err) throw err;
+
+//                 if (stats.isDirectory()) {
+//                     uploadedFolders.push({
+//                         name: file,
+//                         icon: "DIR",
+//                         path: file,
+//                     });
+//                 } else {
+//                     let extension = path.extname(file);
+//                     let icon;
+//                     if (extension == ".txt") icon = "TXT"
+//                     else if (extension == ".jpg") icon = "JPG"
+//                     else if (extension == ".jpeg") icon = "JPEG"
+//                     else if (extension == ".gif") icon = "GIF"
+//                     else if (extension == ".png") icon = "PNG"
+//                     else if (extension == ".ico") icon = "ICO"
+//                     else if (extension == ".html") icon = "HTML"
+//                     else if (extension == ".css") icon = "CSS"
+//                     else if (extension == ".js") icon = "JS"
+//                     else if (extension == ".json") icon = "JSON"
+//                     else { icon = "---" }
+
+//                     let fileRelativePath = path.join(relativePath, file);
+
+//                     uploadedFiles.push({
+//                         name: file,
+//                         icon: icon,
+//                         path: fileRelativePath,
+//                     });
+//                 }
+
+//                 processed++;
+//                 if (processed === files.length) {
+//                     res.render("filemanager5.hbs", {
+//                         uploadedFolders,
+//                         uploadedFiles,
+//                         currentPath: relativePath,
+//                         trail,
+//                         currentFolderName: path.basename(relativePath)
+//                     });
+//                 };
+//             });
+//         });
+//     });
+// });
+
+
+// app.get("/filemanager5/*", function (req, res) {
+//     let relativePath = req.params[0];
+//     let currentPath = path.join(__dirname, "files", relativePath);
+
+//     let fileName = path.basename(currentPath);
+
+//     let currentExtension = path.extname(fileName);
+//     let currentFileNameWithoutExtension = path.basename(fileName, currentExtension);
+
+//     if (!fs.existsSync(currentPath)) {
+//         return res.status(404).send('path nie istnieje');
+//     }
+
+//     let pathParts = relativePath.split('/').filter(part => part);
+//     let trail = [{ name: "files", path: "" }];
+
+//     for (let i = 0; i < pathParts.length; i++) {
+//         let part = pathParts[i];
+//         let currentPath = "";
+
+//         for (let j = 0; j <= i; j++) {
+//             currentPath += (j > 0 ? "/" : "") + pathParts[j];
+//         }
+
+//         trail.push({
+//             name: part,
+//             path: currentPath
+//         });
+//     }
+
+//     fs.readdir(currentPath, (err, files) => {
+//         if (err) throw err;
+
+//         let uploadedFolders = [];
+//         let uploadedFiles = [];
+//         let processed = 0;
+
+//         if (files.length === 0) {
+//             return res.render('filemanager5', {
+//                 uploadedFolders,
+//                 uploadedFiles,
+//                 currentPath: relativePath,
+//                 trail,
+//                 currentFolderName: path.basename(relativePath),
+//                 currentFileName: fileName,
+//                 currentExtension,
+//                 currentFileNameWithoutExtension,
+//                 currentDirectoryPath: relativePath
+//             });
+//         };
+
+//         files.forEach((file) => {
+//             let filePath = path.join(currentPath, file);
+
+//             fs.lstat(filePath, (err, stats) => {
+//                 if (err) throw err;
+
+//                 if (stats.isDirectory()) {
+//                     uploadedFolders.push({
+//                         name: file,
+//                         icon: "DIR",
+//                         path: path.join(relativePath, file),
+//                     });
+//                 } else {
+//                     let extension = path.extname(file);
+//                     let icon;
+//                     if (extension == ".txt") icon = "TXT"
+//                     else if (extension == ".jpg") icon = "JPG"
+//                     else if (extension == ".jpeg") icon = "JPEG"
+//                     else if (extension == ".gif") icon = "GIF"
+//                     else if (extension == ".png") icon = "PNG"
+//                     else if (extension == ".ico") icon = "ICO"
+//                     else if (extension == ".html") icon = "HTML"
+//                     else if (extension == ".css") icon = "CSS"
+//                     else if (extension == ".js") icon = "JS"
+//                     else if (extension == ".json") icon = "JSON"
+//                     else { icon = "---" }
+
+//                     let fileRelativePath = path.join(relativePath, file);
+
+//                     uploadedFiles.push({
+//                         name: file,
+//                         icon: icon,
+//                         path: fileRelativePath,
+//                     });
+//                 }
+
+//                 processed++;
+//                 if (processed === files.length) {
+//                     res.render("filemanager5.hbs", {
+//                         uploadedFolders,
+//                         uploadedFiles,
+//                         currentPath: relativePath,
+//                         trail,
+//                         currentFolderName: path.basename(relativePath),
+//                         currentFileName: fileName,
+//                         currentExtension,
+//                         currentFileNameWithoutExtension,
+//                         currentDirectoryPath: relativePath
+//                     });
+//                 };
+//             });
+//         });
+//     });
+// });
+
+
+// app.post('/filemanager5/*', function (req, res) {
+//     let relativePath = req.params[0];
+//     let currentPath = path.join(__dirname, 'files', relativePath);
+//     let { fileName, folderName } = req.body;
+
+//     if (fileName) {
+//         let newFileName = path.basename(fileName);
+//         let filePath = path.join(currentPath, newFileName);
+//         let counter = 1;
+
+//         while (fs.existsSync(filePath)) {
+//             filePath = path.join(currentPath, `kopia_${counter}_${newFileName}`);
+//             counter++;
+//         }
+
+//         let extension = path.extname(fileName);
+//         let content = '';
+
+//         if (extension == ".txt") icon = "TXT"
+//         else if (extension == ".jpg") icon = "JPG"
+//         else if (extension == ".jpeg") icon = "JPEG"
+//         else if (extension == ".gif") icon = "GIF"
+//         else if (extension == ".png") icon = "PNG"
+//         else if (extension == ".ico") icon = "ICO"
+//         else if (extension == ".html") {
+//             icon = "HTML";
+//             content = "<h1>hello world</h1>";
+//         }
+//         else if (extension == ".css") {
+//             icon = "CSS";
+//             content = "body { background: blue; }";
+//         }
+//         else if (extension == ".js") {
+//             icon = "JS";
+//             content = "console.log('js');";
+//         }
+//         else if (extension == ".json") {
+//             icon = "JSON";
+//             content = JSON.stringify({ a: 1, b: 2, c: 3 });
+//         }
+//         else { icon = "---"; content = ''; }
+
+//         fs.writeFile(filePath, content, (err) => {
+//             if (err) {
+//                 console.error('Błąd przy zapisywaniu pliku:', err);
+//                 return res.status(500).send('Błąd serwera');
+//             }
+//             // console.log('plik utworzony:', newFileName);
+//             res.redirect(`/filemanager5/${relativePath}`);
+//         });
+
+//     } else if (folderName) {
+//         let newFolderName = path.basename(folderName);
+//         let folderPath = path.join(currentPath, newFolderName);
+//         let counter2 = 1;
+
+//         while (fs.existsSync(folderPath)) {
+//             folderPath = path.join(currentPath, `kopia_${counter2}_${newFolderName}`);
+//             counter2++;
+//         }
+//         fs.mkdir(folderPath, (err) => {
+//             if (err) throw err;
+//             // console.log("folder utworzony:", folderName);
+//             res.redirect(`/filemanager5/${relativePath}`);
+//         });
+//     } else {
+//         console.log("Nie podano żadnej nazwy");
+//         res.redirect(`/filemanager5/${relativePath}`);
+//     }
+// });
+
+
+// app.post('/upload5/*', function (req, res) {
+//     let relativePath = req.params[0];
+//     let currentPath = path.join(__dirname, 'files', relativePath);
+
+//     let form = formidable({});
+
+//     form.keepExtensions = true; // zapis z rozszerzeniem pliku
+//     form.multiples = true;
+//     form.uploadDir = currentPath; // folder do zapisu plików
+
+//     form.parse(req, function (err, fields, files) {
+//         if (err) throw err;
+
+//         let fileArray;
+//         if (Array.isArray(files.imagetoupload)) {
+//             fileArray = files.imagetoupload;
+//         }
+//         else {
+//             fileArray = [files.imagetoupload];
+//         }
+
+//         fileArray.forEach((file) => {
+//             let newPath = path.join(currentPath, file.name);
+//             let counter = 1;
+
+//             while (fs.existsSync(newPath)) {
+//                 newPath = path.join(currentPath, `kopia_${counter}_${file.name}`);
+//                 counter++;
+//             }
+
+//             fs.rename(file.path, newPath, (err) => {
+//                 if (err) throw err;
+//                 console.log("Plik zapisany: ", file.name);
+//             });
+//         })
+
+//         res.redirect(`/filemanager5/${relativePath}`);
+//     });
+// });
+
+
+// app.get('/delete-folder/*', (req, res) => {
+//     let folderPath = req.params[0];
+//     let fullPath = path.join(__dirname, 'files', folderPath);
+
+//     fs.rm(fullPath, { recursive: true, force: true }, (err) => {
+//         if (err) throw err;
+//         res.redirect(`/filemanager5/${path.dirname(folderPath)}`);
+//     });
+// });
+
+
+// app.get('/delete-file/*', (req, res) => {
+//     let filePath = req.params[0];
+//     let fullPath = path.join(__dirname, 'files', filePath);
+
+//     fs.unlink(fullPath, (err) => {
+//         if (err) throw err;
+//         res.redirect(`/filemanager5/${path.dirname(filePath)}`);
+//     });
+// });
+
+
+// app.get('/image/*', function (req, res) {
+//     const fileName = req.params[0];
+//     const filePath = path.join(__dirname, "files", fileName);
+
+//     res.sendFile(filePath);
+// });
+
+
+// app.get('/image-view/*', function (req, res) {
+//     let fileName = req.params[0];
+//     let filePath = path.join("files", fileName);
+
+//     const effects = [
+//         { name: "grayscale", image_path: `/image/${fileName}`, },
+//         { name: "contrast", image_path: `/image/${fileName}`, },
+//         { name: "invert", image_path: `/image/${fileName}`, },
+//         { name: "sepia", image_path: `/image/${fileName}`, },
+//         { name: "original", image_path: `/image/${fileName}`, }
+//     ];
+
+//     // console.log(fileName);
+
+//     res.render("image.hbs", {
+//         imageUrl: `/image/${fileName}`,
+//         imageUrl2: `/${fileName}`,
+//         fileName,
+//         currentFileName: path.basename(filePath),
+//         effects
+//     });
+
+// });
+
+// app.post("/save-image", function (req, res) {
+//     const relativePath = decodeURIComponent(req.query.name);
+//     const absolutePath = path.join(__dirname, 'files', relativePath);
+//     const uploadDir = path.dirname(absolutePath);
+
+//     // console.log("File save details:", { relativePath, absolutePath, uploadDir });
+
+//     const form = new formidable.IncomingForm({
+//         uploadDir: uploadDir,
+//         keepExtensions: true,
+//         filename: () => path.basename(absolutePath)
+//     });
+
+//     form.parse(req, (err, fields, files) => {
+//         if (err) throw err;
+
+//         const oldPath = files.image.path;
+
+//         fs.rename(oldPath, absolutePath, (err) => {
+//             if (err) throw err;
+
+//             res.json({ success: true, path: relativePath, message: "file saved" });
+//         });
+//     });
+// });
+
+
+// app.get('/image-preview/*', (req, res) => {
+//     let filePath = path.join(__dirname, "files", req.query.path.slice(6));
+
+//     // console.log(req.query.path.slice(6));
+
+//     // console.log({
+//     //     fileName,
+//     //     filePath,
+//     //     params: req.params,
+//     //     query: req.query
+//     // });
+
+//     // console.log("Podgląd obrazka212:", req.params);
+//     // console.log("Podgląd obrazka:", fileName);
+
+//     res.sendFile(filePath);
+// });
+
+
+// app.post('/rename-file/*', (req, res) => {
+//     let relativePath = req.body.dirname;
+//     let parentDir = path.dirname(relativePath);
+//     let { oldName, newName, select } = req.body;
+
+//     let oldFilePath = path.join(__dirname, 'files', relativePath);
+//     let newFilePath = path.join(__dirname, 'files', parentDir, `${newName}${select}`);
+
+//     fs.rename(oldFilePath, newFilePath, (err) => {
+//         if (err) throw err;
+//         res.redirect(`/filemanager5/${parentDir}`);
+//     });
+// });
+
+
+// app.get('/preview', (req, res) => {
+//     let relativePath = req.query.name;
+
+//     let fullPath = path.join(__dirname, 'files', relativePath);
+
+//     fs.readFile(fullPath, 'utf8', (err, data) => {
+//         res.send(data);
+//     });
+// });
 
 
 app.listen(PORT, function () {
